@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import Boolforge from "../pages/Boolforge";
 
 // ─── Gate evaluator (mirrors Boolforge's evaluateGateWithGates) ───────────────
