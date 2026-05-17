@@ -33,11 +33,11 @@ export const nsPages = [
     path: "/number-systems/bit-converter",
     label: "Bit Converter",
     short: "Converter",
-    description: "Live multi-base converter: binary, octal, decimal, hex.",
+    description: "Convert storage units across bits, bytes, and binary prefixes.",
   },
   {
     path: "/number-systems/calculator",
-    label: "NS Calculator",
+    label: "Number System Calculator",
     short: "Calculator",
     description: "Arithmetic operations across all number bases.",
   },

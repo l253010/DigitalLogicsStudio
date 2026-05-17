@@ -145,52 +145,115 @@ export default function NumberConverter() {
 
     const handleConversionClick = (conversion) => { setSelectedConversion(conversion); setShowExplanation(true); };
 
+    const clearAll = () => {
+        setDecimal('');
+        setBinary('');
+        setOctal('');
+        setHexadecimal('');
+        setSelectedConversion(null);
+        setShowExplanation(false);
+    };
+
+    const hasValues = Boolean(decimal || binary || octal || hexadecimal);
+
+    const converterCards = [
+        {
+            key: 'decimal',
+            base: '10',
+            title: 'Decimal',
+            value: decimal,
+            placeholder: 'Enter decimal...',
+            info: 'Base 10 - digits 0-9',
+            onChange: updateFromDecimal,
+        },
+        {
+            key: 'binary',
+            base: '2',
+            title: 'Binary',
+            value: binary,
+            placeholder: 'Enter binary...',
+            info: 'Base 2 - digits 0-1',
+            onChange: updateFromBinary,
+        },
+        {
+            key: 'octal',
+            base: '8',
+            title: 'Octal',
+            value: octal,
+            placeholder: 'Enter octal...',
+            info: 'Base 8 - digits 0-7',
+            onChange: updateFromOctal,
+        },
+        {
+            key: 'hexadecimal',
+            base: '16',
+            title: 'Hexadecimal',
+            value: hexadecimal,
+            placeholder: 'Enter hex...',
+            info: 'Base 16 - digits 0-9, A-F',
+            onChange: updateFromHexadecimal,
+        },
+    ];
+
     return (
         <NSLayout
             title="Number Conversion"
             subtitle="Real-time conversion between binary, octal, decimal, and hexadecimal"
             intro="Type any value in any base and all four representations update instantly. Use the learn panel below for step-by-step conversion guides."
         >
+            <div className="converter-toolbar">
+                <div>
+                    <p className="converter-toolbar-kicker">Live workspace</p>
+                    <h2 className="converter-toolbar-title">Type in any base</h2>
+                </div>
+                <button
+                    className="converter-clear-btn"
+                    type="button"
+                    onClick={clearAll}
+                    disabled={!hasValues}
+                >
+                    Clear values
+                </button>
+            </div>
+
             {/* Converter Boxes */}
             <div className="converter-grid">
-                <div className="converter-card">
-                    <div className="card-header">
-                        <div className="base-icon decimal">10</div>
-                        <h2 className="card-title decimal">DECIMAL</h2>
+                {converterCards.map((card) => (
+                    <div
+                        key={card.key}
+                        className={`converter-card ${card.value ? 'is-active' : ''}`}
+                    >
+                        <div className="card-header">
+                            <div className={`base-icon ${card.key}`}>{card.base}</div>
+                            <div>
+                                <h2 className={`card-title ${card.key}`}>{card.title}</h2>
+                                <p className="card-info">{card.info}</p>
+                            </div>
+                        </div>
+                        <input
+                            className="converter-input"
+                            type="text"
+                            value={card.value}
+                            onChange={(e) => card.onChange(e.target.value)}
+                            placeholder={card.placeholder}
+                            aria-label={`${card.title} value`}
+                        />
                     </div>
-                    <input className="converter-input" type="text" value={decimal}
-                        onChange={(e) => updateFromDecimal(e.target.value)} placeholder="Enter decimal..." />
-                    <p className="card-info">Base 10 • Digits: 0-9</p>
-                </div>
+                ))}
+            </div>
 
-                <div className="converter-card">
-                    <div className="card-header">
-                        <div className="base-icon binary">2</div>
-                        <h2 className="card-title binary">BINARY</h2>
-                    </div>
-                    <input className="converter-input" type="text" value={binary}
-                        onChange={(e) => updateFromBinary(e.target.value)} placeholder="Enter binary..." />
-                    <p className="card-info">Base 2 • Digits: 0-1</p>
+            <div className="converter-summary">
+                <div>
+                    <span className="converter-summary-label">Status</span>
+                    <strong>{hasValues ? 'Synchronized' : 'Waiting for input'}</strong>
                 </div>
-
-                <div className="converter-card">
-                    <div className="card-header">
-                        <div className="base-icon octal">8</div>
-                        <h2 className="card-title octal">OCTAL</h2>
-                    </div>
-                    <input className="converter-input" type="text" value={octal}
-                        onChange={(e) => updateFromOctal(e.target.value)} placeholder="Enter octal..." />
-                    <p className="card-info">Base 8 • Digits: 0-7</p>
+                <div>
+                    <span className="converter-summary-label">Supported</span>
+                    <strong>Integers and fractions</strong>
                 </div>
-
-                <div className="converter-card">
-                    <div className="card-header">
-                        <div className="base-icon hexadecimal">16</div>
-                        <h2 className="card-title hexadecimal">HEXADECIMAL</h2>
-                    </div>
-                    <input className="converter-input" type="text" value={hexadecimal}
-                        onChange={(e) => updateFromHexadecimal(e.target.value)} placeholder="Enter hex..." />
-                    <p className="card-info">Base 16 • Digits: 0-9, A-F</p>
+                <div>
+                    <span className="converter-summary-label">Precision</span>
+                    <strong>8 fractional steps</strong>
                 </div>
             </div>
 
@@ -221,7 +284,7 @@ export default function NumberConverter() {
                                 ))}
                             </div>
                             <div className="pro-tip">
-                                <p className="pro-tip-label">💡 Pro Tip</p>
+                                <p className="pro-tip-label">Pro Tip</p>
                                 <p className="pro-tip-text">
                                     Try entering different values in the converter boxes above to see how numbers change across different bases in real-time!
                                 </p>
