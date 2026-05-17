@@ -44,7 +44,7 @@ const homeData = [
       { text: "Significant Digits", to: "/boolean/significant-digits" },
       { text: "Consensus", to: "/boolean/consensus" },
       { text: "Complement", to: "/boolean/complement" },
-      { text: "SOP & POS", to: "/standard-forms" },
+      { text: "SOP & POS", to: "/boolean/minterms-maxterms" },
       { text: "Minterms", to: "/boolean/minterms" },
       { text: "Maxterms", to: "/boolean/maxterms" },
       { text: "Relation", to: "/boolean/minterms-maxterms" },
