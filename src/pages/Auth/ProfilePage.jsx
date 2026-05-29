@@ -694,14 +694,6 @@ export default function ProfilePage() {
             >
               Circuit Forge
             </button>
-            <button
-              type="button"
-              className="pd-btn pd-btn--ghost"
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-            >
-              {isLoggingOut ? "Logging out…" : "Logout"}
-            </button>
           </div>
         </section>
 
