@@ -1025,6 +1025,7 @@ export default function IT300() {
       <Navbar toggleTheme={toggleTheme} theme={theme} />
 
       <div
+        className="trainer-page-container"
         style={{
           fontFamily: F,
           background: "radial-gradient(ellipse at 40% 40%,#3a3a3a,#141414)",
@@ -1042,6 +1043,7 @@ export default function IT300() {
       >
         {/* ── OUTER CHASSIS ── */}
         <div
+          className="trainer-outer-chassis"
           style={{
             position: "relative",
             borderRadius: "18px 18px 8px 8px",
@@ -1056,6 +1058,7 @@ export default function IT300() {
         >
           {/* Right wall */}
           <div
+            className="trainer-side-wall"
             style={{
               position: "absolute",
               top: 16,
@@ -1312,13 +1315,7 @@ export default function IT300() {
 
             {/* ════ MAIN 3-COLUMN LAYOUT ════ */}
             {/* FIX: correct column order — left panel | center breadboard | right panel */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "160px 1fr 160px",
-                gap: 8,
-              }}
-            >
+            <div className="trainer-grid">
               {/* ── LEFT PANEL ── */}
               <div>
                 {/* 4-digit 7-seg */}
@@ -1624,24 +1621,26 @@ export default function IT300() {
               {/* ── CENTER (BREADBOARD) ── */}
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 <Sec title="Solderless Breadboard — 2×30 columns × 10 rows + 4 power rails">
-                  {/* FIX: bbWrapRef attached here — this is the coordinate origin for all wires */}
-                  <div
-                    ref={bbWrapRef}
-                    style={{ position: "relative", display: "inline-block" }}
-                  >
-                    <Breadboard
-                      wireStart={wireStart}
-                      wires={wires}
-                      placedICs={placedICs}
-                      onHoleClick={onHoleClick}
-                    />
-                    {/* FIX: WireOverlay uses SVG-local coords — rendered over the SVG */}
-                    <WireOverlay
-                      wires={wires}
-                      preview={preview}
-                      width={bbW}
-                      height={bbH}
-                    />
+                  <div className="breadboard-scroll-wrapper">
+                    {/* FIX: bbWrapRef attached here — this is the coordinate origin for all wires */}
+                    <div
+                      ref={bbWrapRef}
+                      style={{ position: "relative", display: "inline-block", minWidth: `${bbW}px` }}
+                    >
+                      <Breadboard
+                        wireStart={wireStart}
+                        wires={wires}
+                        placedICs={placedICs}
+                        onHoleClick={onHoleClick}
+                      />
+                      {/* FIX: WireOverlay uses SVG-local coords — rendered over the SVG */}
+                      <WireOverlay
+                        wires={wires}
+                        preview={preview}
+                        width={bbW}
+                        height={bbH}
+                      />
+                    </div>
                   </div>
                 </Sec>
 
