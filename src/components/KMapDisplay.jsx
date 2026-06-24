@@ -1,4 +1,3 @@
-// import React from 'react';
 
 export const KMapDisplay = ({
     grid,
@@ -80,11 +79,13 @@ export const KMapDisplay = ({
                                 <tr>
                                     <th className="kmap-corner">
                                         <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                            {numVariables === 2
-                                                ? variables[0]
-                                                : variables.slice(0, 2).join('')} \ {numVariables === 2
-                                                    ? variables[1]
-                                                    : (numVariables === 3 ? variables[2] : variables.slice(2).join(''))}
+                                            {numVariables === 4
+                                                ? variables.slice(0, 2).join('')
+                                                : variables[0]}
+                                                {' \\ '}
+                                                {numVariables === 2
+                                                ? variables[1]
+                                                : variables.slice(1).join('')}
                                         </div>
                                     </th>
                                     {getColumnLabels().map((label, idx) => (
