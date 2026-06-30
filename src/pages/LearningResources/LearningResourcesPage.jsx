@@ -8,7 +8,10 @@ import {
   Cpu,
   GraduationCap,
   Layers3,
+  ListChecks,
+  MonitorPlay,
   Sparkles,
+  Zap,
 } from "lucide-react";
 import { Navbar } from "../Home/Navbar";
 import Footer from "../Home/Footer";
@@ -114,10 +117,137 @@ const trackConfig = {
         description: "Build confidence with basic arithmetic and data movement tasks.",
       },
     ],
+    visualConcepts: [
+      {
+        title: "Fetch → Decode → Execute",
+        description: "See how the CPU steps through each instruction and updates the program flow.",
+        icon: MonitorPlay,
+      },
+      {
+        title: "Registers in Action",
+        description: "Understand how AX, BX, CX, and DX hold temporary values during computation.",
+        icon: Cpu,
+      },
+      {
+        title: "Control Flow Logic",
+        description: "Learn how jumps and comparisons guide the program from one instruction to another.",
+        icon: Zap,
+      },
+    ],
+    demoCode: [
+      {
+        title: "Simple data movement",
+        code: `MOV AX, 5\nMOV BX, 10\nADD AX, BX`,
+      },
+      {
+        title: "Branch example",
+        code: `CMP AX, BX\nJE equal_label\nJNE continue`,
+      },
+      {
+        title: "Looping idea",
+        code: `MOV CX, 5\nloop_start:\nADD AX, 1\nLOOP loop_start`,
+      },
+    ],
+    practiceQuestions: [
+      {
+        difficulty: "Beginner",
+        title: "What does MOV do?",
+        prompt: "Explain the purpose of a MOV instruction and give one example.",
+      },
+      {
+        difficulty: "Beginner",
+        title: "Register understanding",
+        prompt: "Name two registers and describe what each is commonly used for.",
+      },
+      {
+        difficulty: "Intermediate",
+        title: "Branch logic",
+        prompt: "How does a jump instruction change the order of execution in a program?",
+      },
+      {
+        difficulty: "Intermediate",
+        title: "Flag awareness",
+        prompt: "What happens when a comparison instruction is executed before a conditional jump?",
+      },
+    ],
     studyPlan: [
       "Start with the basic structure of COAL instructions and syntax.",
       "Understand registers, memory, and simple data movement.",
       "Practice branching and beginner problems before advancing to more complex topics.",
+    ],
+    roadmapPhases: [
+      {
+        phase: "Phase 1",
+        title: "Computer Fundamentals",
+        duration: "1 Week",
+        points: ["What is a computer?", "CPU, memory, I/O, bus, clock cycles"],
+      },
+      {
+        phase: "Phase 2",
+        title: "Number Systems",
+        duration: "3–4 Days",
+        points: ["Binary, decimal, hexadecimal, octal", "1's and 2's complement, signed vs unsigned"],
+      },
+      {
+        phase: "Phase 3",
+        title: "Boolean Algebra & Logic Gates",
+        duration: "1 Week",
+        points: ["AND, OR, NOT, XOR, NAND, NOR", "Truth tables, De Morgan's law, K-maps"],
+      },
+      {
+        phase: "Phase 4",
+        title: "Digital Logic Circuits",
+        duration: "1 Week",
+        points: ["Half/full adder", "Decoder, encoder, multiplexer, demultiplexer"],
+      },
+      {
+        phase: "Phase 5",
+        title: "Computer Organization",
+        duration: "4–5 Days",
+        points: ["ALU, control unit, registers", "Cache, main memory, secondary memory"],
+      },
+      {
+        phase: "Phase 6",
+        title: "Instruction Cycle",
+        duration: "3 Days",
+        points: ["Fetch, decode, execute, store", "Program counter and instruction register"],
+      },
+      {
+        phase: "Phase 7",
+        title: "Assembly Language Basics",
+        duration: "3 Days",
+        points: ["Basic syntax", "MOV, ADD, SUB, JMP, comparison instructions"],
+      },
+      {
+        phase: "Phase 8",
+        title: "Assembly Instructions",
+        duration: "1 Week",
+        points: ["Data transfer, arithmetic, logic, shift", "Control flow and loops"],
+      },
+      {
+        phase: "Phase 9",
+        title: "Flags Register",
+        duration: "3 Days",
+        points: ["Zero, carry, overflow, sign flags", "How comparisons affect flags"],
+      },
+      {
+        phase: "Phase 10",
+        title: "Addressing Modes",
+        duration: "4 Days",
+        points: ["Immediate, register, direct, indirect", "Indexed and base-indexed addressing"],
+      },
+      {
+        phase: "Phase 11",
+        title: "Stack & Procedures",
+        duration: "4 Days",
+        points: ["PUSH, POP, CALL, RET", "Parameters and local variables"],
+      },
+      {
+        phase: "Phase 12",
+        title: "Arrays, Strings & Interrupts",
+        duration: "1 Week",
+        points: ["Array access and string instructions", "Interrupt-driven input/output"],
+      },
     ],
   },
 };
@@ -136,6 +266,15 @@ const LearningResourcesPage = () => {
 
   const handleHomeClick = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleAnchorClick = (target) => {
+    const id = target.replace("#", "");
+    const section = document.getElementById(id);
+
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
@@ -189,7 +328,25 @@ const LearningResourcesPage = () => {
           <div className="learning-resources-grid">
             {content.quickLinks.map((item) => {
               const ItemIcon = item.icon;
-              return (
+              const isAnchor = item.to?.startsWith("#");
+
+              return isAnchor ? (
+                <button
+                  key={item.title}
+                  type="button"
+                  className="learning-resources-card learning-resources-card-button"
+                  onClick={() => handleAnchorClick(item.to)}
+                >
+                  <div className="learning-resources-card-icon" style={{ color: content.accent }}>
+                    <ItemIcon size={20} />
+                  </div>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                  <span className="learning-resources-card-link">
+                    Open <ArrowRight size={16} />
+                  </span>
+                </button>
+              ) : (
                 <Link key={item.title} to={item.to} className="learning-resources-card">
                   <div className="learning-resources-card-icon" style={{ color: content.accent }}>
                     <ItemIcon size={20} />
@@ -221,19 +378,120 @@ const LearningResourcesPage = () => {
           </div>
         </section>
 
-        <section id="practice" className="learning-resources-section">
+        {resolvedTrack === "coal" ? (
+          <>
+            <section className="learning-resources-section">
+              <div className="learning-resources-section-header">
+                <h2>Visual concept highlights</h2>
+                <p>Quick mental models to connect machine behavior with assembly concepts.</p>
+              </div>
+
+              <div className="learning-resources-visual-grid">
+                {content.visualConcepts.map((item) => {
+                  const VisualIcon = item.icon;
+                  return (
+                    <article key={item.title} className="learning-resources-visual-card">
+                      <div className="learning-resources-visual-icon">
+                        <VisualIcon size={20} />
+                      </div>
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section className="learning-resources-section">
+              <div className="learning-resources-section-header">
+                <h2>Mini demo code</h2>
+                <p>Small examples that help you see how assembly instructions look in practice.</p>
+              </div>
+
+              <div className="learning-resources-demo-grid">
+                {content.demoCode.map((item) => (
+                  <article key={item.title} className="learning-resources-demo-card">
+                    <h3>{item.title}</h3>
+                    <pre>{item.code}</pre>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section id="practice" className="learning-resources-section">
+              <div className="learning-resources-section-header">
+                <h2>Practice questions</h2>
+                <p>Try these beginner-friendly questions and grade yourself by difficulty.</p>
+              </div>
+
+              <div className="learning-resources-practice-grid">
+                {content.practiceQuestions.map((question) => (
+                  <article key={question.title} className="learning-resources-practice-card">
+                    <div className="learning-resources-practice-top">
+                      <span className="learning-resources-difficulty">{question.difficulty}</span>
+                      <span className="learning-resources-idea">
+                        <ListChecks size={15} /> Practice
+                      </span>
+                    </div>
+                    <h3>{question.title}</h3>
+                    <p>{question.prompt}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          </>
+        ) : null}
+
+        <section id="roadmap" className="learning-resources-section">
           <div className="learning-resources-section-header">
-            <h2>Practice and direction</h2>
-            <p>Use this simple roadmap to keep your study sessions organized.</p>
+            <h2>Study roadmap</h2>
+            <p>Follow the sequence below to build COAL knowledge step by step, inspired by a roadmap-style learning flow.</p>
           </div>
 
-          <div className="learning-resources-roadmap">
-            {content.studyPlan.map((step, index) => (
-              <div key={step} className="learning-resources-roadmap-item">
-                <div className="learning-resources-roadmap-number">{index + 1}</div>
-                <p>{step}</p>
-              </div>
-            ))}
+          <div className="learning-resources-roadmap-zigzag">
+            {resolvedTrack === "coal"
+              ? content.roadmapPhases.map((step, idx) => {
+                  const side = idx % 2 === 0 ? "left" : "right";
+                  return (
+                    <div key={step.phase} className={`learning-resources-roadmap-row ${side}`}>
+                      <div className="learning-resources-roadmap-cell">
+                        <div className="learning-resources-roadmap-meta">
+                          <h3>{step.title}</h3>
+                          <span>{step.duration}</span>
+                        </div>
+                        <div className="learning-resources-roadmap-body">
+                          <ul>
+                            {step.points.map((point) => (
+                              <li key={point}>{point}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="learning-resources-tooltip">
+                          <strong>Topics:</strong>
+                          <ul>
+                            {step.points.slice(0, 6).map((p) => (
+                              <li key={p}>{p}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="learning-resources-roadmap-connector" aria-hidden />
+                    </div>
+                  );
+                })
+              : content.studyPlan.map((step, index) => (
+                  <div key={step} className={`learning-resources-roadmap-row left`}>
+                    <div className="learning-resources-roadmap-cell">
+                      <div className="learning-resources-roadmap-meta">
+                        <h3>Step {index + 1}</h3>
+                        <span>Core concept</span>
+                      </div>
+                      <p>{step}</p>
+                      <div className="learning-resources-tooltip">More details coming soon for this path.</div>
+                    </div>
+                    <div className="learning-resources-roadmap-connector" aria-hidden />
+                  </div>
+                ))}
           </div>
         </section>
       </main>
