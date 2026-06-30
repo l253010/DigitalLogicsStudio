@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import {
   ArrowRight,
   BookOpen,
@@ -16,6 +16,8 @@ import {
 import { Navbar } from "../Home/Navbar";
 import Footer from "../Home/Footer";
 import { useTheme } from "../../context/ThemeContext";
+import usePointerGlow from "../../hooks/usePointerGlow";
+import "../Home/Home.css";
 import "./LearningResourcesPage.css";
 
 const trackConfig = {
@@ -252,11 +254,65 @@ const trackConfig = {
   },
 };
 
+const RoadmapConnector = ({ side }) => {
+  const isRight = side === "right";
+  const pathData = isRight
+    ? "M 110 30 H 35 C 30 30, 20 38, 20 80 V 130"
+    : "M 10 30 H 85 C 90 30, 100 38, 100 80 V 130";
+  const arrowPoints = isRight ? "10,126 20,140 30,126" : "90,126 100,140 110,126";
+
+  return (
+    <div className="learning-resources-roadmap-connector" aria-hidden="true">
+      <svg
+        viewBox="0 0 120 180"
+        preserveAspectRatio="none"
+        className="learning-resources-roadmap-connector-svg"
+      >
+        <defs>
+          <linearGradient id="roadmapLineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="rgba(139, 92, 246, 0.18)" />
+            <stop offset="55%" stopColor="rgba(96, 165, 250, 0.65)" />
+            <stop offset="100%" stopColor="rgba(59, 130, 246, 0.95)" />
+          </linearGradient>
+        </defs>
+
+        {/* horizontal out -> gentle curve down -> vertical shaft */}
+        <path
+          d={pathData}
+          fill="none"
+          stroke="url(#roadmapLineGradient)"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+
+        {/* subtle blue arrowhead pointing into the receiving card */}
+        <polygon
+          points={arrowPoints}
+          fill="#60a5fa"
+          className="learning-resources-roadmap-arrowhead"
+        />
+      </svg>
+    </div>
+  );
+};
+
 const LearningResourcesPage = () => {
   const { theme, toggle: toggleTheme } = useTheme();
+  const location = useLocation();
   const { track } = useParams();
   const resolvedTrack = track === "coal" ? "coal" : "dld";
   const content = trackConfig[resolvedTrack];
+  const glowRootRef = usePointerGlow({ color: content.accent, alpha: 0.2 });
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace("#", "");
+      const section = document.getElementById(id);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [location.hash]);
 
   if (track && !trackConfig[track]) {
     return <Navigate to="/resources/dld" replace />;
@@ -277,8 +333,30 @@ const LearningResourcesPage = () => {
     }
   };
 
+  const handleRoadmapTooltipMove = (event) => {
+    const cell = event.currentTarget;
+    const tooltip = cell.querySelector(".learning-resources-tooltip");
+    if (!tooltip) return;
+
+    const rect = cell.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    tooltip.style.setProperty("--tooltip-x", `${x}px`);
+    tooltip.style.setProperty("--tooltip-y", `${y}px`);
+  };
+
+  const resetRoadmapTooltipPosition = (event) => {
+    const cell = event.currentTarget;
+    const tooltip = cell.querySelector(".learning-resources-tooltip");
+    if (!tooltip) return;
+
+    tooltip.style.setProperty("--tooltip-x", "50%");
+    tooltip.style.setProperty("--tooltip-y", "-12px");
+  };
+
   return (
-    <div className="learning-resources-page">
+    <div className="learning-resources-page" ref={glowRootRef}>
       <div className="grid-background" />
       <Navbar
         toggleTheme={toggleTheme}
@@ -334,25 +412,37 @@ const LearningResourcesPage = () => {
                 <button
                   key={item.title}
                   type="button"
-                  className="learning-resources-card learning-resources-card-button"
+                  className="learning-resources-card learning-resources-card-button learning-resources-glow-card"
                   onClick={() => handleAnchorClick(item.to)}
                 >
-                  <div className="learning-resources-card-icon" style={{ color: content.accent }}>
-                    <ItemIcon size={20} />
+                  <div className="learning-resources-card-meta">
+                    <div className="learning-resources-card-icon" style={{ color: content.accent }}>
+                      <ItemIcon size={20} />
+                    </div>
+                    <div className="learning-resources-card-copy">
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                    </div>
                   </div>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
                   <span className="learning-resources-card-link">
                     Open <ArrowRight size={16} />
                   </span>
                 </button>
               ) : (
-                <Link key={item.title} to={item.to} className="learning-resources-card">
-                  <div className="learning-resources-card-icon" style={{ color: content.accent }}>
-                    <ItemIcon size={20} />
+                <Link
+                  key={item.title}
+                  to={item.to}
+                  className="learning-resources-card learning-resources-glow-card"
+                >
+                  <div className="learning-resources-card-meta">
+                    <div className="learning-resources-card-icon" style={{ color: content.accent }}>
+                      <ItemIcon size={20} />
+                    </div>
+                    <div className="learning-resources-card-copy">
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                    </div>
                   </div>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
                   <span className="learning-resources-card-link">
                     Open <ArrowRight size={16} />
                   </span>
@@ -454,7 +544,11 @@ const LearningResourcesPage = () => {
                   const side = idx % 2 === 0 ? "left" : "right";
                   return (
                     <div key={step.phase} className={`learning-resources-roadmap-row ${side}`}>
-                      <div className="learning-resources-roadmap-cell">
+                      <div
+                        className="learning-resources-roadmap-cell"
+                        onPointerMove={handleRoadmapTooltipMove}
+                        onPointerLeave={resetRoadmapTooltipPosition}
+                      >
                         <div className="learning-resources-roadmap-meta">
                           <h3>{step.title}</h3>
                           <span>{step.duration}</span>
@@ -475,13 +569,19 @@ const LearningResourcesPage = () => {
                           </ul>
                         </div>
                       </div>
-                      <div className="learning-resources-roadmap-connector" aria-hidden />
+                      {idx < content.roadmapPhases.length - 1 && (
+                        <RoadmapConnector side={side} />
+                      )}
                     </div>
                   );
                 })
               : content.studyPlan.map((step, index) => (
                   <div key={step} className={`learning-resources-roadmap-row left`}>
-                    <div className="learning-resources-roadmap-cell">
+                    <div
+                      className="learning-resources-roadmap-cell"
+                      onPointerMove={handleRoadmapTooltipMove}
+                      onPointerLeave={resetRoadmapTooltipPosition}
+                    >
                       <div className="learning-resources-roadmap-meta">
                         <h3>Step {index + 1}</h3>
                         <span>Core concept</span>
@@ -489,7 +589,9 @@ const LearningResourcesPage = () => {
                       <p>{step}</p>
                       <div className="learning-resources-tooltip">More details coming soon for this path.</div>
                     </div>
-                    <div className="learning-resources-roadmap-connector" aria-hidden />
+                    {index < content.studyPlan.length - 1 && (
+                      <RoadmapConnector side="left" />
+                    )}
                   </div>
                 ))}
           </div>

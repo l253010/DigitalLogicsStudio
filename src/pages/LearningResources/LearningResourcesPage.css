@@ -1,7 +1,7 @@
 .learning-resources-page {
   min-height: 100vh;
-  background: var(--page-bg, #07111f);
-  color: var(--text-primary, #f8fafc);
+  background: var(--bg-color);
+  color: var(--text-color);
   position: relative;
   overflow-x: hidden;
 }
@@ -12,6 +12,11 @@
   padding: 2rem 1.25rem 4rem;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.learning-resources-section[id],
+.learning-resources-section[id] * {
+  scroll-margin-top: 110px;
 }
 
 /* see here first */
@@ -39,10 +44,10 @@
 .learning-resources-badge {
   display: inline-flex;
   padding: 0.4rem 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--badge-border);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--accent-color, #60a5fa);
+  background: var(--badge-bg);
+  color: var(--badge-text);
   font-size: 0.82rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -79,18 +84,18 @@
 }
 
 .learning-resources-btn.secondary {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary, #f8fafc);
-  border-color: rgba(255, 255, 255, 0.14);
+  background: var(--surface-elevated);
+  color: var(--text-color);
+  border-color: var(--border-color);
 }
 
 .learning-resources-hero-card {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--surface-elevated);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--border-color);
   border-radius: 1.25rem;
   padding: 1.4rem;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.24);
+  box-shadow: var(--card-shadow);
 }
 
 .learning-resources-hero-icon {
@@ -118,9 +123,9 @@
   margin-top: 1.2rem;
   padding: 1.5rem;
   border-radius: 1.4rem;
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
 }
 
 .learning-resources-section-header h2 {
@@ -141,32 +146,79 @@
 }
 
 .learning-resources-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  padding: 1rem;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary, #f8fafc);
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  background: var(--card-bg);
+  color: var(--text-color);
   text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
 .learning-resources-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(59, 130, 246, 0.3);
+  background: var(--surface-elevated);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.learning-resources-glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--pointer-glow-x, 50%) var(--pointer-glow-y, 50%),
+    var(--pointer-glow-color, rgba(59, 130, 246, 0.12)) 0%,
+    transparent 42%
+  );
+  opacity: var(--pointer-glow-opacity, 0);
+  transition: opacity 250ms ease, background-position 80ms ease;
+}
+
+.learning-resources-card-meta {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.learning-resources-card-copy {
+  min-width: 0;
+  display: grid;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.learning-resources-card-copy h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.learning-resources-card-copy p {
+  margin: 0;
+  color: var(--secondary-text);
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
 .learning-resources-card-icon {
-  width: 42px;
-  height: 42px;
+  width: 56px;
+  height: 56px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(59, 130, 246, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
 }
 
 .learning-resources-card h3 {
@@ -199,8 +251,8 @@
 .learning-resources-concept-card {
   padding: 1rem 1.1rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-color);
 }
 
 .learning-resources-concept-card h3 {
@@ -238,8 +290,8 @@
 .learning-resources-practice-card {
   padding: 1rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-color);
 }
 
 .learning-resources-visual-icon {
@@ -249,8 +301,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--accent-color, #60a5fa);
+  background: var(--chip-bg);
+  color: var(--accent-color);
   margin-bottom: 0.7rem;
 }
 
@@ -271,10 +323,11 @@
 
 .learning-resources-demo-card pre {
   white-space: pre-wrap;
-  background: rgba(3, 7, 18, 0.45);
+  background: var(--surface-inset);
   border-radius: 0.8rem;
   padding: 0.85rem;
-  color: #dbeafe;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
   font-family: "Fira Code", "Consolas", monospace;
   font-size: 0.92rem;
 }
@@ -291,8 +344,8 @@
   display: inline-flex;
   padding: 0.25rem 0.55rem;
   border-radius: 999px;
-  background: rgba(96, 165, 250, 0.16);
-  color: #93c5fd;
+  background: rgba(59, 130, 246, 0.16);
+  color: var(--accent-color);
   font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -303,7 +356,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: #c4b5fd;
+  color: var(--secondary-text);
   font-size: 0.8rem;
 }
 
@@ -319,8 +372,8 @@
   gap: 0.85rem;
   padding: 0.9rem 1rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-color);
 }
 
 .learning-resources-roadmap-number {
@@ -371,7 +424,7 @@
 
 .learning-resources-roadmap-item p {
   margin: 0;
-  color: var(--text-primary, #f8fafc);
+  color: var(--text-color);
   line-height: 1.7;
 }
 
@@ -390,14 +443,22 @@
 }
 
 .learning-resources-card-button {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  gap: 0.8rem;
+  justify-content: space-between;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-color);
   color: inherit;
   cursor: pointer;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
 .learning-resources-card-button:hover {
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: rgba(59, 130, 246, 0.35);
 }
 
 .learning-resources-roadmap {
@@ -408,14 +469,15 @@
 
 .learning-resources-roadmap-zigzag {
   display: grid;
-  gap: 18px;
+  gap: 0;
   margin-top: 1.15rem;
 }
 
 .learning-resources-roadmap-row {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: center;
+  align-items: start;
   gap: 12px;
 }
 
@@ -434,28 +496,56 @@
   min-height: 140px;
   padding: 1rem;
   border-radius: 1.15rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
   width: calc(100% - 40px);
 }
 
 .learning-resources-roadmap-cell:hover {
   transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.24);
-  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(59, 130, 246, 0.28);
+  background: var(--surface-muted);
 }
 
+/* ---------------------------------------------------------------- */
+/* Curved arrow connectors between zigzag roadmap steps               */
+/* Built as an SVG path: horizontal out -> gentle curve -> vertical   */
+/* shaft -> arrowhead, mirrored via scaleX for right-side cards.      */
+/* ---------------------------------------------------------------- */
+
 .learning-resources-roadmap-connector {
-  height: 4px;
-  width: 36px;
-  background: linear-gradient(90deg, rgba(139, 92, 246, 0.12), rgba(139, 92, 246, 0.85));
-  justify-self: center;
+  position: absolute;
+  top: calc(100% - 130px);
+  width: 280px;
+  height: 170px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.learning-resources-roadmap-row.left .learning-resources-roadmap-connector {
+  left: calc(50% - 70px);
 }
 
 .learning-resources-roadmap-row.right .learning-resources-roadmap-connector {
-  transform: rotate(180deg);
+  right: calc(50% - 70px);
+}
+
+.learning-resources-roadmap-connector.flip {
+  transform: scaleX(-1);
+}
+
+.learning-resources-roadmap-connector-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+  filter: drop-shadow(0 4px 10px rgba(59, 130, 246, 0.12));
+}
+
+.learning-resources-roadmap-arrowhead {
+  filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.45));
 }
 
 .learning-resources-roadmap-meta {
@@ -493,9 +583,9 @@
 
 .learning-resources-tooltip {
   position: absolute;
-  left: 50%;
-  top: -12px;
-  transform: translateX(-50%) translateY(-100%);
+  left: var(--tooltip-x, 50%);
+  top: var(--tooltip-y, -12px);
+  transform: translate(-50%, -110%);
   width: calc(100% - 1.5rem);
   max-width: 260px;
   padding: 0.8rem;
@@ -507,14 +597,13 @@
   color: #f8fafc;
   font-size: 0.9rem;
   line-height: 1.6;
-  transition: opacity 180ms ease, transform 180ms ease;
+  transition: opacity 180ms ease, left 120ms ease, top 120ms ease;
   box-shadow: 0 24px 56px rgba(0, 0, 0, 0.22);
   z-index: 10;
 }
 
 .learning-resources-roadmap-cell:hover .learning-resources-tooltip {
   opacity: 1;
-  transform: translateX(-50%) translateY(-110%);
 }
 
 .learning-resources-tooltip::after {
@@ -528,13 +617,24 @@
 }
 
 @media (max-width: 900px) {
-  .learning-resources-roadmap-grid,
-  .learning-resources-roadmap-cell {
-    grid-column: span 1;
+  .learning-resources-roadmap-row {
+    grid-template-columns: 1fr;
   }
 
+  .learning-resources-roadmap-row.left .learning-resources-roadmap-cell,
+  .learning-resources-roadmap-row.right .learning-resources-roadmap-cell {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .learning-resources-roadmap-connector,
   .learning-resources-roadmap-cell::after,
   .learning-resources-roadmap-cell::before {
     display: none;
+  }
+
+  .learning-resources-roadmap-row {
+    margin-bottom: 1rem;
   }
 }
