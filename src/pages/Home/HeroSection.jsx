@@ -65,9 +65,9 @@ export default function HeroSection({ searchTerm, setSearchTerm, onSearchSubmit 
         </div>
 
         {/* Heading */}
-        <h1>
+        <h1 className="hero-main-title">
           <span className="hero-title-line">Master Digital Logic</span>
-          <span className="hero-title-accent"> Interactively</span>
+          <span className="hero-title-accent">Interactively</span>
         </h1>
 
         {/* Sub-description */}
