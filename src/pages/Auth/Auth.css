@@ -118,6 +118,43 @@
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
 }
 
+.auth-forgot-link {
+  justify-self: end;
+  margin-top: -0.5rem;
+  color: var(--accent-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-forgot-link:hover {
+  text-decoration: underline;
+}
+
+.auth-otp-hint {
+  margin: 0;
+  color: var(--secondary-text);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.auth-otp-hint strong {
+  color: var(--text-color);
+}
+
+.auth-success {
+  margin: 0;
+  border-radius: 0.95rem;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.1);
+  color: #86efac;
+  padding: 0.9rem 1rem;
+}
+
+[data-theme="light"] .auth-success {
+  color: #15803d;
+}
+
 .auth-error {
   margin: 0;
   border-radius: 0.95rem;

@@ -170,6 +170,7 @@ const MemoryConstructionRAM = lazy(
 const DLDTrainerBoard = lazy(() => import("./pages/TrainerBoard"));
 const LoginPage = lazy(() => import("./pages/Auth/LoginPage"));
 const SignupPage = lazy(() => import("./pages/Auth/SignupPage"));
+const ForgotPasswordPage = lazy(() => import("./pages/Auth/ForgotPasswordPage"));
 const ProfilePage = lazy(() => import("./pages/Auth/ProfilePage"));
 const SettingsPage = lazy(() => import("./pages/Auth/SettingsPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
@@ -224,6 +225,7 @@ const AppContent = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route
             path="/profile"
             element={

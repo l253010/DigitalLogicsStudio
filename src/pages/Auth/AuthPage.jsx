@@ -185,6 +185,12 @@ export default function AuthPage({ mode }) {
                 />
               </label>
 
+              {!isSignup && (
+                <Link to="/forgot-password" className="auth-forgot-link">
+                  Forgot password?
+                </Link>
+              )}
+
               {isSignup && (
                 <label className="auth-field">
                   <span>Confirm Password</span>
