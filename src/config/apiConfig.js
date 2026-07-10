@@ -19,13 +19,29 @@ function shouldUseSameOriginProxy(url) {
   );
 }
 
+// A usable API base must carry a path — ours live under /api. A bare origin
+// (e.g. REACT_APP_API_URL accidentally set to the frontend site URL via
+// swapped Vercel env vars) sends requests to static hosting, which answers
+// 405 on POST.
+function isUsableApiBase(url) {
+  if (url.startsWith("/")) return true; // same-origin path like /api
+  try {
+    return new URL(url).pathname !== "/";
+  } catch {
+    return false;
+  }
+}
+
 export function resolveApiBaseUrl() {
   const configured = process.env.REACT_APP_API_URL?.trim();
   if (configured) {
     if (shouldUseSameOriginProxy(configured)) {
       return SAME_ORIGIN_API_URL;
     }
-    return normalizeUrl(configured);
+    const normalized = normalizeUrl(configured);
+    if (isUsableApiBase(normalized)) {
+      return normalized;
+    }
   }
   return process.env.NODE_ENV === "production"
     ? SAME_ORIGIN_API_URL
