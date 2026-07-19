@@ -419,15 +419,13 @@ const PremiumLearningShell = ({
 
         <main className="afhdl-main">
           <nav className="afhdl-breadcrumb" aria-label="Breadcrumb">
-            <Link to="/" className="afhdl-bc-link">Home</Link>
+            <Link to="/" className="afhdl-bc-link">
+              Home
+            </Link>
             <span className="afhdl-bc-sep">›</span>
-            <Link to="/resources/coal" className="afhdl-bc-link">COAL</Link>
+            <span className="afhdl-bc-mid">{topicLabel}</span>
             <span className="afhdl-bc-sep">›</span>
-            <Link to="/resources/coal/theory" className="afhdl-bc-link">Theory</Link>
-            <span className="afhdl-bc-sep">›</span>
-            {!isOverview && (
-              <span className="afhdl-bc-current">{title}</span>
-            )}
+            <span className="afhdl-bc-current">{title}</span>
           </nav>
 
           <section className="afhdl-hero">
